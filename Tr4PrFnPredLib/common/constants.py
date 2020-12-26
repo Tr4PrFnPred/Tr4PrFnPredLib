@@ -1,0 +1,4 @@
+MODEL_XBERT = "XBERT"
+MODEL_DEEPGO = "deepgo"
+MODEL_DEEPRED = "deepred"
+MODEL_GOLABELER = "golabeler"
