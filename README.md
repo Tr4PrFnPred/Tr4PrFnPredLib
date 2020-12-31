@@ -1,1 +1,1 @@
-# TransformerProteinFunctionPredLib
+# Transformers for Protein Function Prediction Library
