@@ -22,7 +22,7 @@ def submit_job(model: str,
         :return: the id of the submitted job
     """
 
-    output = subprocess.run([JOB_SUBMIT, folder + script_name], capture_output=True)
+    output = subprocess.run([JOB_SUBMIT, folder + script_name, "-m", model, "-s", sequences], capture_output=True)
 
     # output is type <class 'bytes'>
     # convert to string with utf-9 decoding

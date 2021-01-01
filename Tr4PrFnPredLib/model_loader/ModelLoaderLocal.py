@@ -1,9 +1,8 @@
 import os
 import logging
 
-from tensorflow import keras
-
 from .ModelLoader import ModelLoader
+from .ModelLoaderUtil import load_model_keras, load_model_pytorch
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +22,7 @@ class ModelLoaderLocal(ModelLoader):
 
         if model_name in os.listdir(self.model_dir):
             logger.info("Loading model: " + model_name)
-            return keras.models.load_model(os.path.join(self.model_dir, model_name))
+            return load_model_keras(os.path.join(self.model_dir, model_name))
         else:
             logger.warning("No model found with name: " + model_name)
             return None

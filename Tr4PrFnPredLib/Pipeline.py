@@ -28,6 +28,12 @@ class Pipeline:
 
     def predict(self, data: Union[str, list]):
         logger.info(data)
+
+        if isinstance(data, str):
+            # expect a csv formatted string for multiple sequences
+            # or a single string for a single sequence
+            data = data.split(",")
+
         tokenized = self.tokenizer.tokenize(data)
         prediction = self.model.predict(tokenized)
 
