@@ -1,14 +1,13 @@
 # import configparser
 # TODO: configurations for job submission
 
-from typing import List
 import asyncio
 
 from ..common.constants import JOB_SUBMIT, JOB_STATUS
 
 
 async def _submit_job(model: str,
-                      sequences: List,
+                      sequences: dict,
                       script_name: str,
                       folder: str) -> (bytes, bytes):
 
@@ -31,22 +30,22 @@ async def _submit_job(model: str,
     return stdout, stderr
 
 
-def submit_and_get_job_id(model: str,
-                                sequences: List,
-                                script_name="job_submission.sh",
-                                folder="./") -> int:
+async def submit_and_get_job_id(model: str,
+                          entry_dict: dict,
+                          script_name="job_submission.sh",
+                          folder="./") -> int:
 
     """
         Submit a job to Compute Canada cluster and get the job id of the submitted job
 
         :param model: Name of model to use
-        :param sequences: Sequences for job to predict
+        :param entry_dict: Entries and their sequences for job to predict
         :param script_name: Name of the script to submit job
         :param folder: Folder containing scripts
         :return: the id of the submitted job
     """
 
-    stdout, stderr = asyncio.run(_submit_job(model, sequences, script_name, folder))
+    stdout, stderr = await asyncio.run(_submit_job(model, entry_dict, script_name, folder))
 
     # output is type <class 'bytes'>
     # convert to string with utf-9 decoding
@@ -87,7 +86,7 @@ async def _get_job_info(job_id: int) -> (bytes, bytes):
     return stdout, stderr
 
 
-def check_job_status(job_id: int) -> str:
+async def check_job_status(job_id: int) -> str:
 
     """
         Return status of submitted Compute Canada job
@@ -96,7 +95,7 @@ def check_job_status(job_id: int) -> str:
         :return: the status of the submitted job
     """
 
-    stdout, stderr = asyncio.run(_get_job_info(job_id))
+    stdout, stderr = await asyncio.run(_get_job_info(job_id))
 
     script_stdout = stdout.decode("utf-8")
 

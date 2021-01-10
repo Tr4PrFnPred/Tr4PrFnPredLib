@@ -1,8 +1,7 @@
 #!/bin/bash
 
 #SBATCH --account=def-jrgreen
-#SBATCH --job-name=example
-#SBATCH --output=/home/dershao/scratch/4thYearProject/SteveJobs/output.log
+#SBATCH --output=/home/dershao/scratch/4thYearProject/output.log
 #SBATCH --mem=4g
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
@@ -36,8 +35,13 @@ do
             shift
             shift
             ;;
-        -script)
+        -sc | -script)
             script="$2"
+            shift
+            shift
+            ;;
+        -n | -name)
+            name="$2"
             shift
             shift
             ;;
@@ -55,4 +59,9 @@ pip install --no-index --upgrade pip
 
 pip install --no-index --upgrade git+git://github.com/Tr4PrFnPred/Tr4PrFnPredLib.git
 
-python ~/scratch/Tr4PrFnPred/$(script) -m $(model) -s $(sequences)
+# get job id
+job_id=$(sacct -n -X --format jobid --name $(name))
+# use the job id as the unique results file
+results_file="/home/dershao/scratch/4thYearProject/"$(job_id)
+
+python ~/scratch/Tr4PrFnPred/$(script) --model $(model) --sequences $(sequences) --results_file $(results_file)
