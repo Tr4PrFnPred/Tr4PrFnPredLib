@@ -2,3 +2,4 @@ tensorflow==2.4.0
 torch==1.7.1
 pandas==1.2.0
 aiofiles==0.6.0
+redis==3.5.3

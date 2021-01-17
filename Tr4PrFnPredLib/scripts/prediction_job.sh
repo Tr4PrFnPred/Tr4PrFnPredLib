@@ -1,5 +1,9 @@
 #!/bin/bash
 
+###########################################
+# TO BE PLACED ON COMPUTE CANADA CLUSTER  #
+###########################################
+
 #SBATCH --account=def-jrgreen
 #SBATCH --output=/home/dershao/scratch/4thYearProject/output.log
 #SBATCH --mem=4g
@@ -19,7 +23,7 @@ USAGE
     exit 0
 }
 
-script="job_submission.py"
+script="predict_job.py"
 
 while [[ $# -gt 0 ]]
 do
@@ -62,6 +66,6 @@ pip install --no-index --upgrade git+git://github.com/Tr4PrFnPred/Tr4PrFnPredLib
 # get job id
 job_id=$(sacct -n -X --format jobid --name $(name))
 # use the job id as the unique results file
-results_file="/home/dershao/scratch/4thYearProject/"$(job_id)
+results_file="~/scratch/"$(job_id)"/preds.res"
 
 python ~/scratch/Tr4PrFnPred/$(script) --model $(model) --sequences $(sequences) --results_file $(results_file)

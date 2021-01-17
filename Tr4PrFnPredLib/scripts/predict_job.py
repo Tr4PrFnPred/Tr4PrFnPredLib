@@ -1,3 +1,6 @@
+###########################################
+# TO BE PLACED ON COMPUTE CANADA CLUSTER  #
+###########################################
 import argparse
 import json
 import pandas as pd
