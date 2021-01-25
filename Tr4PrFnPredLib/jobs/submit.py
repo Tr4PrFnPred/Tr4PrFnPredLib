@@ -52,7 +52,7 @@ async def _submit_job(job_id: str,
     """
 
     cmd = f'ssh -t dershao@cedar.computecanada.ca \'cd /scratch/dershao && ' \
-        f'{JOB_SUBMIT} /scratch/dershao{script_name} -m {model} -s {sequences}\' | grep Submitted'
+        f'{JOB_SUBMIT} /scratch/dershao/{script_name} -m {model} -s {sequences}\' | grep Submitted'
 
     proc = await asyncio.create_subprocess_exec(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
 
@@ -85,7 +85,7 @@ async def _submit_job(job_id: str,
 async def submit_and_get_job_id(model: str,
                                 entry_dict: dict,
                                 script_name="prediction_job.sh",
-                                folder="./") -> str:
+                                folder="") -> str:
 
     """
         Submit a job to Compute Canada cluster and get the job id of the submitted job
@@ -101,7 +101,8 @@ async def submit_and_get_job_id(model: str,
     job_id = str(uuid.uuid4())
 
     # cache the job id with status
-    cache_job_id(job_id, STATUS_PENDING, None)
+    # currently cache id as -1 since no cluster job id available yet
+    cache_job_id(job_id, STATUS_PENDING, -1)
 
     # async - run job submission script
     await _create_job_folder(job_id)
