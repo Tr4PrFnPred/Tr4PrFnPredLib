@@ -2,6 +2,8 @@ from ..common.constants import MODEL_DEEPGO, MODEL_DEEPRED, MODEL_GOLABELER, MOD
 from .DeepGoPostProcess import DeepGoPostProcess
 from .PostProcess import PostProcess
 
+from pathlib import Path
+
 import pandas as pd
 import logging
 
@@ -9,8 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 def get_deepgo_postproces() -> PostProcess:
-
-    terms_df = pd.read_pickle("resources/terms.pkl")
+    postprocess_dir = Path(__file__).parent
+    terms_file = postprocess_dir / "resources" / "terms.pkl"
+    terms_df = pd.read_pickle(str(terms_file))
     return DeepGoPostProcess(terms_df)
 
 

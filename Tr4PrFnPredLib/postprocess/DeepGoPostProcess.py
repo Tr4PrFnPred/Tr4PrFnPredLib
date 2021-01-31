@@ -17,10 +17,10 @@ class DeepGoPostProcess(PostProcess):
                 deep_preds[prot_id] = {}
             for l in range(len(self.terms)):
                 if predictions[i, l] >= 0.01:  # Filter out very low scores
-                    if self.terms[l] not in deep_preds[prot_id]:
-                        deep_preds[prot_id][self.terms[l]] = predictions[i, l]
+                    if self.terms.iloc[l][0] not in deep_preds[prot_id]:
+                        deep_preds[prot_id][self.terms.iloc[l][0]] = predictions[i, l]
                     else:
-                        deep_preds[prot_id][self.terms[l]] = max(
-                            deep_preds[prot_id][self.terms[l]], predictions[i, l])
+                        deep_preds[prot_id][self.terms.iloc[l][0]] = max(
+                            deep_preds[prot_id][self.terms.iloc[l][0]], predictions[i, l])
 
         return deep_preds
