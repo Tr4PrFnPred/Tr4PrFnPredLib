@@ -31,6 +31,7 @@ async def _create_job_folder(job_id: str):
         :param job_id:
     """
     cmd = f'ssh -t dershao@cedar.computecanada.ca \'mkdir ~/scratch/Tr4PrFnPredJobs/{job_id}\''
+    print("Create job folder:", cmd)
 
     await asyncio.create_subprocess_exec(cmd)
 

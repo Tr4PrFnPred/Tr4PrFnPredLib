@@ -5,7 +5,7 @@ from .model_loader.ModelLoader import ModelLoader
 from .model_loader.ModelLoaderLocal import ModelLoaderLocal
 from .tokenizer.Tokenizer import Tokenizer
 from .tokenizer.TokenizerFactory import get_tokenizer
-from .tokenizer.IdentityTokenizer import IdentityTokenizer
+from .postprocess.PostProcess import PostProcess
 
 
 import logging
@@ -16,7 +16,8 @@ class Pipeline:
 
     def __init__(self,
                  model: Model,
-                 tokenizer: Tokenizer):
+                 tokenizer: Tokenizer,
+                 postprocess: PostProcess):
         """
             Create a pipeline
 
@@ -27,7 +28,7 @@ class Pipeline:
         self.model = model
         self.tokenizer = tokenizer
 
-    def predict(self, data: Union[str, list]):
+    def predict(self, data: Union[str, list], **kwargs):
         logger.info(data)
 
         if isinstance(data, str):
