@@ -3,7 +3,6 @@
 ###########################################
 import argparse
 import json
-import pandas as pd
 
 from Tr4PrFnPredLib.Pipeline import pipeline
 from Tr4PrFnPredLib.jobs.save import save_results
@@ -31,15 +30,15 @@ sequences = list(entry_dict.values())
 
 # create the model pipeline
 model_pipeline = pipeline(model)
-preds = model_pipeline.predict(sequences)
+preds = model_pipeline.predict(sequences, ids=[i for i in range(len(entries))], prot_ids=entries)
 print(preds)
 
 # create dataframe for the results
-df = pd.DataFrame({
+results = {
     "entries": entries,
     "sequences": sequences,
-    "terms": preds
-})
+    "terms": preds.values()
+}
 
 # next request when job is complete will fetch those results from disk
-save_results(df, results_file)
+save_results(results, results_file)

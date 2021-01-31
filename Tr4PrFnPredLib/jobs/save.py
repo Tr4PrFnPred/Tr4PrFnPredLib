@@ -8,5 +8,5 @@ def save_results(results, results_file: str):
         :param results: Object containing results
         :param results_file: Location of the results
     """
-    with open(results_file, "rb") as file:
+    with open(results_file, "wb") as file:
         pickle.dump(results, file)

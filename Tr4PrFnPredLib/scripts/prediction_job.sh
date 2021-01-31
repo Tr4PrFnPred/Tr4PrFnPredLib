@@ -59,9 +59,9 @@ done
 module load python/3.6
 virtualenv --no-download $SLURM_TMPDIR/env
 source $SLURM_TMPDIR/env/bin/activate
-pip install --no-index --upgrade pip
+pip install --yes --no-index --upgrade pip
 
-pip install --no-index --upgrade git+git://github.com/Tr4PrFnPred/Tr4PrFnPredLib.git
+pip install --yes --no-index --upgrade git+git://github.com/Tr4PrFnPred/Tr4PrFnPredLib.git
 
 # get job id
 job_id=$(sacct -n -X --format jobid --name $(name))
