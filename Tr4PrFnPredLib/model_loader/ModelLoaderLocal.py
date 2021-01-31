@@ -3,6 +3,7 @@ import logging
 
 from .ModelLoader import ModelLoader
 from .ModelLoaderUtil import load_model_keras, load_model_pytorch
+from .model_config import MODEL_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,11 @@ class ModelLoaderLocal(ModelLoader):
 
         # TODO: different libraries - e.g. keras loader, pytorch loader, etc.
 
-        if model_name in os.listdir(self.model_dir):
+        if model_name in MODEL_FILE:
             logger.info("Loading model: " + model_name)
-            return load_model_keras(os.path.join(self.model_dir, model_name))
+            model_file = MODEL_FILE[model_name]
+            model = load_model_keras(os.path.join(self.model_dir, model_file))
+            return model
         else:
             logger.warning("No model found with name: " + model_name)
             return None

@@ -4,6 +4,7 @@ from .model.Model import Model
 from .model_loader.ModelLoader import ModelLoader
 from .model_loader.ModelLoaderLocal import ModelLoaderLocal
 from .tokenizer.Tokenizer import Tokenizer
+from .tokenizer.TokenizerFactory import get_tokenizer
 from .tokenizer.IdentityTokenizer import IdentityTokenizer
 
 
@@ -41,22 +42,21 @@ class Pipeline:
 
 
 def pipeline(
-    model: Union[str, Model],
-    tokenizer: Optional[Union[str, Tokenizer]] = IdentityTokenizer(),
+    model_name: Union[str, Model],
+    tokenizer: Optional[Union[str, Tokenizer]] = None,
     model_loader: Optional[ModelLoader] = ModelLoaderLocal(".")
 ) -> Pipeline:
 
-    if isinstance(model, str):
+    if isinstance(model_name, str):
         # load the model with the model_loader class
-        logging.debug(f"Loading model: {model}")
-        model = Model(model_loader.load_model(model))
-    elif not isinstance(model, Model):
+        logging.debug(f"Loading model: {model_name}")
+        model = Model(model_loader.load_model(model_name))
+        tokenizer = get_tokenizer(model_name)
+    elif not isinstance(model_name, Model):
         # if it's not a Model class, then its an invalid argument
-        raise TypeError("Invalid argument passed for model: " + model)
+        raise TypeError("Invalid argument passed for model: " + model_name)
 
-    if isinstance(tokenizer, str):
-        pass
-    elif not isinstance(tokenizer, Tokenizer):
-        raise TypeError("Invalid argument passed for tokenizer: " + tokenizer)
+    if isinstance(tokenizer, Tokenizer):
+        tokenizer = get_tokenizer(model_name)
 
     return Pipeline(model, tokenizer)

@@ -1,6 +1,6 @@
 # model name constants
 MODEL_XBERT = "XBERT"
-MODEL_DEEPGO = "deepgo"
+MODEL_DEEPGO = "deepgoplus"
 MODEL_DEEPRED = "deepred"
 MODEL_GOLABELER = "golabeler"
 
