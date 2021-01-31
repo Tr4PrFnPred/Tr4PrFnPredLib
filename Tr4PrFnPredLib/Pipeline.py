@@ -54,6 +54,9 @@ def pipeline(
 ) -> Pipeline:
 
     if isinstance(model_name, str):
+        # make lower case since all string constants in this lib is lowercase
+        model_name = model_name.lower()
+
         # load the model with the model_loader class
         logging.debug(f"Loading model: {model_name}")
         model = Model(model_loader.load_model(model_name))
@@ -65,6 +68,7 @@ def pipeline(
             post_process = get_postprocess(model_name)
     elif not isinstance(model_name, Model):
         # if it's not a Model class, then its an invalid argument
+        # TODO: error checking for missing dependencies
         raise TypeError("Invalid argument passed for model: " + model_name)
 
     return Pipeline(model, tokenizer, post_process)
