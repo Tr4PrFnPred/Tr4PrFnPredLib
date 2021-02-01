@@ -66,6 +66,8 @@ async def _submit_job(job_id: str,
     # convert to string with utf-9 decoding
     script_stdout = stdout.decode("utf-8")
 
+    print("SCRIPT STDOUT: ", script_stdout)
+
     """
         Output of the 'sbatch' command follows the format:
 
@@ -109,10 +111,10 @@ async def submit_and_get_job_id(model: str,
     cache_job_id(job_id, STATUS_PENDING, -1)
 
     # async - run job submission script
-    asyncio.run(_create_job_folder(job_id))
+    await _create_job_folder(job_id)
 
     # submit the job to the Compute Canada cluster
-    asyncio.run(_submit_job(job_id, model, entry_dict, script_name, folder))
+    await _submit_job(job_id, model, entry_dict, script_name, folder)
 
     return job_id
 
