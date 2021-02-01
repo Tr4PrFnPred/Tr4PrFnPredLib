@@ -16,9 +16,9 @@ async def _create_submission_folder(job_id: str) -> int:
 
     create_folder_cmd = f"ssh -t dershao@cedar.computecanada.ca 'mkdir /home/dershao/scratch/{job_id}'"
 
-    proc = await asyncio.create_subprocess_exec(create_folder_cmd,
-                                                stdout=asyncio.subprocess.PIPE,
-                                                stderr=asyncio.subprocess.PIPE)
+    proc = await asyncio.create_subprocess_shell(create_folder_cmd,
+                                                 stdout=asyncio.subprocess.PIPE,
+                                                 stderr=asyncio.subprocess.PIPE)
 
     await proc.communicate()
 
@@ -30,10 +30,13 @@ async def _create_job_folder(job_id: str):
         Create a job submission folder containing all relevant files for the specified job_id.
         :param job_id:
     """
-    cmd = f'ssh -t dershao@cedar.computecanada.ca \'mkdir ~/scratch/Tr4PrFnPredJobs/{job_id}\''
-    print("Create job folder:", cmd)
+    cmd = f'ssh -t dershao@cedar.computecanada.ca \'mkdir ~/scratch/{job_id}\''
 
-    await asyncio.create_subprocess_exec(cmd)
+    proc = await asyncio.create_subprocess_shell(cmd)
+
+    await proc.communicate()
+
+    return proc.returncode
 
 
 async def _submit_job(job_id: str,
@@ -55,7 +58,7 @@ async def _submit_job(job_id: str,
     cmd = f'ssh -t dershao@cedar.computecanada.ca \'cd /scratch/dershao && ' \
         f'{JOB_SUBMIT} /scratch/dershao/{script_name} -m {model} -s {sequences}\' | grep Submitted'
 
-    proc = await asyncio.create_subprocess_exec(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    proc = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
 
     stdout, stderr = await proc.communicate()
 
@@ -106,7 +109,7 @@ async def submit_and_get_job_id(model: str,
     cache_job_id(job_id, STATUS_PENDING, -1)
 
     # async - run job submission script
-    await _create_job_folder(job_id)
+    asyncio.run(_create_job_folder(job_id))
 
     # submit the job to the Compute Canada cluster
     asyncio.run(_submit_job(job_id, model, entry_dict, script_name, folder))

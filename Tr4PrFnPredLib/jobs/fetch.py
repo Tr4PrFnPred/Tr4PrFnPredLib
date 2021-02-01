@@ -13,7 +13,7 @@ async def fetch_results(job_id: str,
         :return: result entries, sequences, and the predicted GO terms.
     """
 
-    result_file = f'{directory}{job_id}/preds.res'
+    result_file = f'ssh -t dershao@cedar.computecanada.ca {directory}{job_id}/preds.res'
 
     async with aiofiles.open(result_file, mode='rb') as file:
         results = await pickle.load(file)
@@ -21,4 +21,4 @@ async def fetch_results(job_id: str,
     # result file is pandas dataframe with columns
     # | entries | sequences | terms |
 
-    return results.entries, results.sequences, results.terms
+    return results
