@@ -1,0 +1,2 @@
+recursive-include Tr4PrFnPredLib/postprocess/resources *.pkl
+recursive-include Tr4PrFnPredLib *.h5
