@@ -7,5 +7,12 @@ setup(name='Tr4PrFnPredLib',
       description='Library for protein function prediction models',
       author='Tr4FnPr',
       author_email='derekshao@cmail.carleton.ca',
-      packages=find_packages()
+      packages=find_packages(),
+      install_requires=[
+            'tensorflow-gpu',
+            'torch',
+            'pandas',
+            'aiofiles',
+            'redis'
+      ]
     )
