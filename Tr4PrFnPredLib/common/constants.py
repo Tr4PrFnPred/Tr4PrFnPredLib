@@ -1,3 +1,5 @@
+from pathlib import Path
+
 # model name constants
 MODEL_XBERT = "XBERT"
 MODEL_DEEPGO = "deepgoplus"
@@ -17,3 +19,6 @@ STATUS_COMPLETE = "COMPLETED"
 CACHE_JOB_ID_KEY = "job_id"
 CACHE_JOB_STATUS = "status"
 CACHE_JOB_CLUSTER_ID = "cluster_job_id"
+
+# Folder paths
+MODEL_CACHE = Path(__file__).parent.parent / "models" / ".cache"

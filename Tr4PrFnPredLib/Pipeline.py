@@ -1,13 +1,13 @@
 from typing import Union, Optional
-from pathlib import Path
 
 from .model.Model import Model
 from .model_loader.ModelLoader import ModelLoader
-from .model_loader.ModelLoaderLocal import ModelLoaderLocal
+from .model_loader.ModelLoaderRelease import ModelLoaderRelease
 from .tokenizer.Tokenizer import Tokenizer
 from .tokenizer.TokenizerFactory import get_tokenizer
 from .postprocess.PostProcess import PostProcess
 from .postprocess.PostProcessFactory import get_postprocess
+from .common.constants import MODEL_CACHE
 
 
 import logging
@@ -49,7 +49,7 @@ class Pipeline:
 def pipeline(
     model_name: Union[str, Model],
     tokenizer: Optional[Union[str, Tokenizer]] = None,
-    model_loader: Optional[ModelLoader] = ModelLoaderLocal(Path(__file__).parent / "models"),
+    model_loader: Optional[ModelLoader] = ModelLoaderRelease(MODEL_CACHE),
     post_process: Optional[Union[str, PostProcess]] = None
 ) -> Pipeline:
 
