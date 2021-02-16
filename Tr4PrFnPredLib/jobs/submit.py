@@ -4,6 +4,8 @@ import sys
 
 import asyncio
 import uuid
+import json
+
 from ..common.constants import JOB_SUBMIT, JOB_STATUS, STATUS_PENDING, STATUS_RUNNING
 from ..utils.storage import cache_job_id
 
@@ -41,22 +43,32 @@ async def _create_job_folder(job_id: str):
 
 async def _submit_job(job_id: str,
                       model: str,
-                      sequences: dict,
+                      entry_dict: dict,
                       script_name: str,
                       folder: str):
 
     """
         Submit a job to Compute Canada cluster
 
+        :param job_id: Id of the job generated from application
         :param model: Name of model to use
-        :param sequences: Sequences for job to predict
+        :param entry_dict: Entry names and Sequences for job to predict
         :param script_name: Name of the script to submit job
         :param folder: Folder containing scripts
         :return: output of job submission
     """
 
+    # python dictionary has single quotes but json has double quotes
+    # json.dumps converts to necessary quotes and replace whitespaces created
+    # whitespaces needed to be removed since otherwise it will be considered as separate args in script
+    sequences = json.dumps(entry_dict).replace(" ", "").replace(",", "\\,")
+    print(f'Submitting job with sequences: {sequences}')
+
     cmd = f'ssh -t dershao@cedar.computecanada.ca \'cd /scratch/dershao && ' \
-        f'{JOB_SUBMIT} /scratch/dershao/{script_name} -m {model} -s {sequences}\' | grep Submitted'
+        f'{JOB_SUBMIT} /scratch/dershao/{script_name} -m {model} -s \'\\\'\'{sequences}\'\\\'\' -i {job_id}\' ' \
+        '| grep Submitted'
+
+    print(f'Command: {cmd}')
 
     proc = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
 

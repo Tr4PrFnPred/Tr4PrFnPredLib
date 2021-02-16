@@ -13,7 +13,7 @@ setup(name='Tr4PrFnPredLib',
             'tensorflow-gpu',
             'torch',
             'pandas',
-            'aiofiles',
+#             'aiofiles',
             'redis'
       ]
     )
