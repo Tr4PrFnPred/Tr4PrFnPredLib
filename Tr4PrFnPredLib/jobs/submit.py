@@ -111,10 +111,10 @@ async def submit_and_get_job_id(model: str,
     cache_job_id(job_id, STATUS_PENDING, -1)
 
     # async - run job submission script
-    await _create_job_folder(job_id)
+    asyncio.create_task(_create_job_folder(job_id))
 
     # submit the job to the Compute Canada cluster
-    await _submit_job(job_id, model, entry_dict, script_name, folder)
+    asyncio.create_task(_submit_job(job_id, model, entry_dict, script_name, folder))
 
     return job_id
 
