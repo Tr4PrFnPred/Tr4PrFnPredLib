@@ -1,9 +1,11 @@
 import aiofiles
+import aiofiles.os
 import pickle
+import asyncio
 
 
 async def fetch_results(job_id: str,
-                        directory="~/scratch/"):
+                        directory="/scratch/dershao/"):
 
     """
         Fetch results saved from disk.
@@ -13,12 +15,18 @@ async def fetch_results(job_id: str,
         :return: result entries, sequences, and the predicted GO terms.
     """
 
-    result_file = f'ssh -t dershao@cedar.computecanada.ca {directory}{job_id}/preds.res'
+    result_file = f'{job_id}-pred.res'
+
+    cmd = f'scp dershao@cedar.computecanada.ca:{directory}{job_id}/preds.res {result_file}'
+
+    await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
 
     async with aiofiles.open(result_file, mode='rb') as file:
         results = await pickle.load(file)
 
-    # result file is pandas dataframe with columns
-    # | entries | sequences | terms |
+    await aiofiles.os.remove(result_file)
+
+    # result is a Python dictionary with the keys:
+    # 'entries' | 'sequences' | 'terms'
 
     return results
