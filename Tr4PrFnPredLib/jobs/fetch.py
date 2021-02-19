@@ -2,6 +2,7 @@ import aiofiles
 import aiofiles.os
 import pickle
 import asyncio
+from pathlib import Path
 
 
 async def fetch_results(job_id: str,
@@ -15,18 +16,20 @@ async def fetch_results(job_id: str,
         :return: result entries, sequences, and the predicted GO terms.
     """
 
-    result_file = f'{job_id}-pred.res'
+    result_file_path = Path(__file__).parent / f'{job_id}-pred.res'
 
-    cmd = f'scp dershao@cedar.computecanada.ca:{directory}{job_id}/preds.res {result_file}'
+    cmd = f'scp dershao@cedar.computecanada.ca:{directory}{job_id}/preds.res {result_file_path}'
 
-    await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    proc = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
 
-    async with aiofiles.open(result_file, mode='rb') as file:
-        results = await pickle.load(file)
+    await proc.communicate()
 
-    await aiofiles.os.remove(result_file)
+    async with aiofiles.open(result_file_path, mode='rb') as file:
+        results = await file.read()
+
+    await aiofiles.os.remove(result_file_path)
 
     # result is a Python dictionary with the keys:
     # 'entries' | 'sequences' | 'terms'
 
-    return results
+    return pickle.loads(results)
