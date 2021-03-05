@@ -19,6 +19,7 @@ STATUS_COMPLETE = "COMPLETED"
 CACHE_JOB_ID_KEY = "job_id"
 CACHE_JOB_STATUS = "status"
 CACHE_JOB_CLUSTER_ID = "cluster_job_id"
+CACHE_EXPIRY_SECONDS = 60 * 60 * 24 * 7 # 1 week in seconds
 
 # Folder paths
 MODEL_CACHE = Path(__file__).parent.parent / "models" / ".cache"

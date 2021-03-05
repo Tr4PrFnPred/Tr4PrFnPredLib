@@ -1,6 +1,6 @@
 import redis
 
-from ..common.constants import CACHE_JOB_CLUSTER_ID, CACHE_JOB_STATUS
+from ..common.constants import CACHE_JOB_CLUSTER_ID, CACHE_JOB_STATUS, CACHE_EXPIRY_SECONDS
 
 
 def _cache_job_id_redis(job_id: str, status: str, host: str, port: int, cluster_job_id: int):
@@ -10,6 +10,7 @@ def _cache_job_id_redis(job_id: str, status: str, host: str, port: int, cluster_
     r = redis.Redis(host=host, port=port)
 
     r.hmset(job_id, job_entry)
+    r.expire(job_id, CACHE_EXPIRY_SECONDS)
 
 
 def cache_job_id(job_id: str, status: str, cluster_job_id=-1):
