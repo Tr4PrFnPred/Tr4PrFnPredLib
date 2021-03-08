@@ -8,9 +8,9 @@ class Ontology:
         Original from: https://github.com/bio-ontology-research-group/deepgoplus
     """
 
-    def __init__(self, with_rels=True):
+    def __init__(self, go_file: str, with_rels=True):
 
-        self.ont = self.load(Path(__file__).parent / "resources" / "go.obo", with_rels)
+        self.ont = self.load(go_file, with_rels)
         self.ic = None
 
     def has_term(self, term_id):
@@ -127,3 +127,9 @@ class Ontology:
                 for ch_id in self.ont[t_id]['children']:
                     q.append(ch_id)
         return term_set
+
+
+def load_ontology(file=Path(__file__).parent / "resources" / "go.obo"):
+
+    go_ontology = Ontology(file)
+    return go_ontology
