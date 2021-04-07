@@ -32,7 +32,6 @@ class Pipeline:
         self.post_process = post_process
 
     def predict(self, data: Union[str, list], **kwargs):
-        logger.info(data)
 
         if isinstance(data, str):
             # expect a csv formatted string for multiple sequences
