@@ -1,4 +1,4 @@
-from ..common.constants import MODEL_DEEPGO, MODEL_DEEPRED, MODEL_GOLABELER, MODEL_XBERT
+from ..common.constants import MODEL_DEEPGO, MODEL_DEEPRED, MODEL_GOLABELER, MODEL_XBERT, MODEL_PROTBERT
 from .DeepGoPostProcess import DeepGoPostProcess
 from .PostProcess import PostProcess
 
@@ -19,6 +19,7 @@ def get_deepgo_postproces() -> PostProcess:
 
 POSTPROCESS = {
     MODEL_DEEPGO: get_deepgo_postproces(),
+    MODEL_PROTBERT: get_deepgo_postproces(),
     # etc.
 }
 

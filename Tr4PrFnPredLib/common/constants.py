@@ -2,6 +2,7 @@ from pathlib import Path
 
 # model name constants
 MODEL_XBERT = "XBERT"
+MODEL_PROTBERT = "ProtBERT" 
 MODEL_DEEPGO = "deepgoplus"
 MODEL_DEEPRED = "deepred"
 MODEL_GOLABELER = "golabeler"
