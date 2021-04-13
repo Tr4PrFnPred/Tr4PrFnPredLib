@@ -58,7 +58,7 @@ def pipeline(
 
         # load the model with the model_loader class
         logging.debug(f"Loading model: {model_name}")
-        model = Model(model_loader.load_model(model_name))
+        model = Model(model_name, model_loader.load_model(model_name))
 
         if tokenizer is None:
             tokenizer = get_tokenizer(model_name)

@@ -4,3 +4,4 @@ pandas==1.2.0
 aiofiles==0.6.0
 redis==3.5.3
 requests==2.25.1
+transformers==4.2.2

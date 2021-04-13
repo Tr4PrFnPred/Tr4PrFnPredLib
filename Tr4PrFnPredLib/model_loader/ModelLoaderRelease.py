@@ -1,6 +1,6 @@
+from ..common.constants import MODEL_DEEPGO, MODEL_DEEPRED, MODEL_GOLABELER, MODEL_XBERT, MODEL_PROTBERT
 from .ModelLoader import ModelLoader
-from .ModelLoaderUtil import load_model_keras
-from .model_config import MODEL_URLS, MODEL_FILE
+from .model_config import MODEL_URLS, MODEL_FILE, MODEL_LOADER
 
 import requests
 import logging
@@ -9,6 +9,7 @@ from pathlib import Path
 
 logging.basicConfig(level = logging.INFO)
 logger = logging.getLogger(__file__)
+
 
 
 class ModelRequests:
@@ -62,5 +63,7 @@ class ModelLoaderRelease(ModelLoader):
             os.makedirs(self.model_dir)
 
         self.model_requester.get_model(model_name, model_path)
+        
+        
 
-        return load_model_keras(model_path)
+        return MODEL_LOADER[model_name](model_path)
